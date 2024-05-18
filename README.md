@@ -38,6 +38,7 @@ RNASQLite/
 ├── setup.py
 └── README.md
 
+
 Description
 RNASQLite/cli.py: Handles the command line interface.
 RNASQLite/db_utils.py: Contains utility functions related to the database.
