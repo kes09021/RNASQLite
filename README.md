@@ -1,38 +1,60 @@
 # RNASQLite
 
-RNASQLite is a collection of Python scripts designed to store and manage RNA-seq data in an SQLite database.
+RNASQLite is a tool for managing RNA-Seq data with SQLite. This package allows you to process RNA-Seq counts files, insert count files into a database, and retrieve sample information from the database.
 
-## File Description
+## Installation
 
-- setup_database.py: Creates the SQLite database and the required tables.
-- process_file.py: Processes RNA-seq data by separating it into files based on gene_id and gene_name, and removes files containing non-numeric values.
-- insert_into_db.py: Inserts the processed RNA-seq data into the SQLite database.
-- gene_info.csv: Contains information about gene_id, gene_type, and gene_name.
+First, navigate to the directory containing setup.py and install the package.
+
+pip install .
 
 ## Usage
 
-### 1. Create the Database
+1. Create Database
 
-python setup_database.py
+Create a new database. If a database file with the same name already exists, it will be deleted.
 
-### 2. Process RNA-seq Data
+RNASQLite -create
 
-python process_file.py path_to_your_rna_seq_counts_file
+2. Process and Split RNAseq Counts File
 
-Example:
+Process the given RNAseq counts file and save the count files for each sample in the counts directory. This step uses the gene info file (gene_info.csv) to add gene information.
 
-python process_file.py C:\Users\kes09\BI\tmp\GSE266762_RNAseq_counts.csv
+RNASQLite -split path/to/your/rna_seq_counts_file.csv
 
-### 3. Insert Processed Data into the Database
+3. Insert Count Files into Database
 
-python insert_into_db.py path_to_your_rna_seq_counts_file
+Read the count files from the counts directory and insert them into the database.
 
-Example:
+RNASQLite -load
 
-python insert_into_db.py C:\Users\kes09\BI\tmp\GSE266762_RNAseq_counts.csv
+4. Fetch All Samples from Database
 
-## Dependencies
+Retrieve all sample information from the database.
 
-Install the packages listed in the requirements.txt file.
+RNASQLite -fetch
 
-pip install -r requirements.txt
+## File Structure
+
+RNASQLite/
+├── RNASQLite/
+│   ├── __init__.py
+│   ├── cli.py
+│   ├── db_utils.py
+│   └── process_file.py
+├── gene_info.csv
+├── setup.py
+└── README.md
+
+### Description
+
+- RNASQLite/cli.py: Handles the command line interface.
+- RNASQLite/db_utils.py: Contains utility functions related to the database.
+- RNASQLite/process_file.py: Processes the given gene_info.csv and RNAseq counts file to generate count files.
+- gene_info.csv: CSV file containing gene information.
+- setup.py: Contains package metadata and dependencies.
+- README.md: This file, which includes the description and usage of the RNASQLite package.
+
+### Note
+
+The gene_info.csv file should be placed in the root directory of the project. This ensures that all scripts can reference the gene_info.csv file.
