@@ -27,16 +27,7 @@ Retrieve all sample information from the database.
 
 RNASQLite -fetch
 
-File Structure
-RNASQLite/
-├── RNASQLite/
-│ ├── init.py
-│ ├── cli.py
-│ ├── db_utils.py
-│ └── process_file.py
-├── gene_info.csv
-├── setup.py
-└── README.md
+
 
 Description
 RNASQLite/cli.py: Handles the command line interface.
@@ -45,5 +36,3 @@ RNASQLite/process_file.py: Processes the given gene_info.csv and RNAseq counts f
 gene_info.csv: CSV file containing gene information.
 setup.py: Contains package metadata and dependencies.
 README.md: This file, which includes the description and usage of the RNASQLite package.
-Note
-The gene_info.csv file should be placed in the root directory of the project. This ensures that all scripts can reference the gene_info.csv file.
