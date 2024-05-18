@@ -19,17 +19,11 @@ python setup_database.py
 
 python process_file.py path_to_your_rna_seq_counts_file
 
-Example:
-
-python process_file.py C:\Users\kes09\BI\tmp\GSE266762_RNAseq_counts.csv
 
 ### 3. Insert Processed Data into the Database
 
 python insert_into_db.py path_to_your_rna_seq_counts_file
 
-Example:
-
-python insert_into_db.py C:\Users\kes09\BI\tmp\GSE266762_RNAseq_counts.csv
 
 ## Dependencies
 
