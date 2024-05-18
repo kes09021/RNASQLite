@@ -30,10 +30,10 @@ RNASQLite -fetch
 File Structure
 RNASQLite/
 ├── RNASQLite/
-│ ├── init.py
-│ ├── cli.py
-│ ├── db_utils.py
-│ └── process_file.py
+│   ├── __init__.py
+│   ├── cli.py
+│   ├── db_utils.py
+│   └── process_file.py
 ├── gene_info.csv
 ├── setup.py
 └── README.md
