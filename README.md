@@ -18,7 +18,7 @@ pip install RNASQLite
 
 ## Usage
 Create Database
-Create a new database. If a database file with the same name already exists, it will be deleted.
+Create a new database. 
 ```
 RNASQLite -create
 ```
