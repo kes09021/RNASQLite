@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='RNASQLite',
-    version='0.1.6',  # 버전을 증가시킵니다.
+    version='0.1.8',  # 버전을 증가시킵니다.
     packages=find_packages(),
     install_requires=[
         'pandas',

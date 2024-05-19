@@ -1,9 +1,12 @@
-RNASQLite
+# RNASQLite
+
 RNASQLite is a tool for managing RNA-Seq data with SQLite. This package allows you to process RNA-Seq counts files, insert count files into a database, and retrieve sample information from the database.
 
-Installation
-First, navigate to the directory containing setup.py and install the package.
+## Installation
 
+First, navigate to the directory containing `setup.py` and install the package:
+
+```bash
 pip install .
 
 Usage
@@ -27,7 +30,14 @@ Retrieve all sample information from the database.
 
 RNASQLite -fetch
 
+Fetch Samples by Column and Value
+Fetch samples from the database by specifying a column name and a value.
 
+RNASQLite -column COLUMN VALUE
+
+Example:
+
+RNASQLite -column GSE_number GSE201396
 
 Description
 RNASQLite/cli.py: Handles the command line interface.

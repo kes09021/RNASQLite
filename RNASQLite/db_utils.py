@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import pandas as pd
 
 def setup_database(db_path):
     # 데이터베이스 연결 (db 파일이 없으면 새로 생성됨)
@@ -83,3 +84,62 @@ def fetch_all_samples(db_path):
 
     # 연결 종료
     conn.close()
+    
+def fetch_filtered_samples(db_path, column_name, identifier_value):
+    # SQLite 데이터베이스 연결
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    # 특정 열 이름과 값에 따라 count_path 가져오기
+    query = f"SELECT count_path FROM samples WHERE {column_name} = ?"
+    cursor.execute(query, (identifier_value,))
+    csv_files = [row[0] for row in cursor.fetchall()]
+
+    # 데이터베이스 연결 종료
+    conn.close()
+
+    if not csv_files:
+        print(f"No files found for {column_name} = {identifier_value}")
+        return
+
+    # 고정된 선택할 열 이름 지정
+    columns_to_select = ["gene_id", "gene_name"]
+
+    # 첫 번째 파일로 기준 데이터프레임 생성
+    base_df = pd.read_csv(csv_files[0])
+    base_df = base_df.sort_values(by=columns_to_select)
+    base_first_two_cols = base_df[columns_to_select]
+
+    # 다른 파일들과 공통된 부분 찾기
+    for file in csv_files[1:]:
+        df = pd.read_csv(file)
+        df = df.sort_values(by=columns_to_select)
+        first_two_cols = df[columns_to_select]
+        
+        # 공통된 부분 추출
+        base_first_two_cols = pd.merge(base_first_two_cols, first_two_cols, on=columns_to_select)
+
+    # 최종 공통된 부분을 기준으로 데이터 추출
+    common_data = base_first_two_cols
+    merged_df = common_data.copy()
+
+    for file in csv_files:
+        df = pd.read_csv(file)
+        df = df.sort_values(by=columns_to_select)
+        third_col = df.iloc[:, 2]
+        
+        # 공통된 부분에 대한 데이터 추출 및 결합
+        third_col_common = pd.merge(common_data, df, on=columns_to_select)[df.columns[2]]
+        
+        # 추출한 데이터를 통합 데이터프레임에 추가
+        merged_df = pd.concat([merged_df, third_col_common.reset_index(drop=True)], axis=1)
+
+    # 열 이름 설정 (gene_id, gene_name, IDD-1, IDD-2, ...)
+    columns = columns_to_select + [f'{csv_files[i].split("_")[-2]}' for i in range(len(csv_files))]
+    merged_df.columns = columns
+
+    # 통합 CSV 파일로 저장
+    output_file = "filtered_output.csv"
+    merged_df.to_csv(output_file, index=False)
+
+    print(f"Filtered samples saved to '{output_file}'.")

@@ -1,7 +1,7 @@
 import argparse
 import os
 import pkg_resources
-from RNASQLite.db_utils import setup_database, insert_counts_into_db, get_count_files, fetch_all_samples
+from RNASQLite.db_utils import setup_database, insert_counts_into_db, get_count_files, fetch_all_samples, fetch_filtered_samples
 from RNASQLite.process_file import process_file
 
 def main():
@@ -10,6 +10,7 @@ def main():
     parser.add_argument('-split', type=str, help='Process RNAseq counts file and split into count files')
     parser.add_argument('-load', action='store_true', help='Load counts files into the database')
     parser.add_argument('-fetch', action='store_true', help='Fetch all samples from the database')
+    parser.add_argument('-column', type=str, nargs=2, metavar=('COLUMN', 'VALUE'), help='Fetch samples by column and value')
     args = parser.parse_args()
 
     db_path = 'geo_rna_seq.db'  # SQLite 데이터베이스 파일 경로
@@ -30,6 +31,9 @@ def main():
         insert_counts_into_db(db_path, count_files)
     elif args.fetch:
         fetch_all_samples(db_path)
+    elif args.column:
+        column_name, identifier_value = args.column
+        fetch_filtered_samples(db_path, column_name, identifier_value)
     else:
         print("Invalid command. Use -create, -split <file>, -load, or -fetch.")
 
