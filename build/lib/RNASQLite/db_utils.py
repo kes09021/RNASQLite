@@ -84,7 +84,7 @@ def fetch_all_samples(db_path):
 
     # 연결 종료
     conn.close()
-    
+
 def fetch_filtered_samples(db_path, column_name, identifier_value):
     # SQLite 데이터베이스 연결
     conn = sqlite3.connect(db_path)
@@ -100,7 +100,7 @@ def fetch_filtered_samples(db_path, column_name, identifier_value):
 
     if not csv_files:
         print(f"No files found for {column_name} = {identifier_value}")
-        return
+        return None
 
     # 고정된 선택할 열 이름 지정
     columns_to_select = ["gene_id", "gene_name"]
@@ -138,8 +138,10 @@ def fetch_filtered_samples(db_path, column_name, identifier_value):
     columns = columns_to_select + [f'{csv_files[i].split("_")[-2]}' for i in range(len(csv_files))]
     merged_df.columns = columns
 
-    # 통합 CSV 파일로 저장
-    output_file = "filtered_output.csv"
+    # 통합 CSV 파일로 저장 (열 이름과 식별자를 포함한 파일 이름)
+    output_file = f"filtered_{column_name}_{identifier_value}.csv"
     merged_df.to_csv(output_file, index=False)
 
     print(f"Filtered samples saved to '{output_file}'.")
+
+    return output_file
