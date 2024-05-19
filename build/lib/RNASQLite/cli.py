@@ -18,9 +18,10 @@ def main():
         setup_database(db_path)
     elif args.split:
         rna_seq_counts_path = args.split
-        gene_info_path = 'gene_info.csv'  # 실행 디렉토리에서 gene_info.csv 파일을 찾습니다
+        root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))  # 루트 디렉토리 경로
+        gene_info_path = os.path.join(root_dir, 'gene_info.csv')  # 루트 디렉토리에서 gene_info.csv 파일을 찾습니다
         if not os.path.isfile(gene_info_path):
-            print(f"Error: {gene_info_path} file not found in the current directory.")
+            print(f"Error: {gene_info_path} file not found in the root directory.")
             return
         process_file(gene_info_path, rna_seq_counts_path, counts_dir)
     elif args.load:

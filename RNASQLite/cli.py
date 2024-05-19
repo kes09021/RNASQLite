@@ -1,5 +1,6 @@
 import argparse
 import os
+import pkg_resources
 from RNASQLite.db_utils import setup_database, insert_counts_into_db, get_count_files, fetch_all_samples
 from RNASQLite.process_file import process_file
 
@@ -18,9 +19,10 @@ def main():
         setup_database(db_path)
     elif args.split:
         rna_seq_counts_path = args.split
-        gene_info_path = 'gene_info.csv'  # 실행 디렉토리에서 gene_info.csv 파일을 찾습니다
+        # 패키지 내부에서 gene_info.csv 파일 경로를 찾습니다
+        gene_info_path = pkg_resources.resource_filename(__name__, 'gene_info.csv')
         if not os.path.isfile(gene_info_path):
-            print(f"Error: {gene_info_path} file not found in the current directory.")
+            print(f"Error: {gene_info_path} file not found.")
             return
         process_file(gene_info_path, rna_seq_counts_path, counts_dir)
     elif args.load:

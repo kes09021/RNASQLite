@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='RNASQLite',
-    version='0.1.3',  # 버전을 업데이트합니다.
+    version='0.1.3',  # 버전을 증가시킵니다.
     packages=find_packages(),
     install_requires=[
         'pandas',
@@ -12,6 +12,10 @@ setup(
             'RNASQLite=RNASQLite.cli:main',
         ],
     },
+    package_data={
+        '': ['gene_info.csv'],
+    },
+    include_package_data=True,
     description='A tool for managing RNA-Seq data with SQLite',
     author='Your Name',
     author_email='your.email@example.com',
