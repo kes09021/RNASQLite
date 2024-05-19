@@ -1,21 +1,19 @@
 import sqlite3
 import os
-import pandas as pd
 
 def setup_database(db_path):
-
-
     # 데이터베이스 연결 (db 파일이 없으면 새로 생성됨)
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
 
     # 테이블 생성
     c.execute('''
-    CREATE TABLE samples (
+    CREATE TABLE IF NOT EXISTS samples (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         GSE_number TEXT,
         sample_ID TEXT,
-        count_path TEXT
+        count_path TEXT,
+        UNIQUE(GSE_number, sample_ID)
     )
     ''')
 
@@ -44,10 +42,20 @@ def insert_counts_into_db(db_path, count_files):
             print(f"Invalid filename format: {filename}")
             continue
 
+        # 중복 확인
         c.execute('''
-            INSERT INTO samples (GSE_number, sample_ID, count_path)
-            VALUES (?, ?, ?)
-        ''', (GSE_number, sample_ID, count_path))
+            SELECT COUNT(*) FROM samples WHERE GSE_number = ? AND sample_ID = ?
+        ''', (GSE_number, sample_ID))
+        result = c.fetchone()
+
+        if result[0] == 0:
+            # 중복이 아닐 경우 데이터 삽입
+            c.execute('''
+                INSERT INTO samples (GSE_number, sample_ID, count_path)
+                VALUES (?, ?, ?)
+            ''', (GSE_number, sample_ID, count_path))
+        else:
+            print(f"Duplicate entry found for GSE_number: {GSE_number}, sample_ID: {sample_ID}. Skipping insertion.")
 
     # 변경사항 저장
     conn.commit()
