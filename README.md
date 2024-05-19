@@ -9,7 +9,7 @@ First, navigate to the directory containing `setup.py` and install the package:
 ```bash
 pip install .
 ```
-Usage
+## Usage
 Create Database
 Create a new database. If a database file with the same name already exists, it will be deleted.
 ```
@@ -39,10 +39,15 @@ Example:
 ```
 RNASQLite -column GSE_number GSE201396
 ```
-Description
+## Description
 RNASQLite/cli.py: Handles the command line interface.
+
 RNASQLite/db_utils.py: Contains utility functions related to the database.
+
 RNASQLite/process_file.py: Processes the given gene_info.csv and RNAseq counts file to generate count files.
+
 gene_info.csv: CSV file containing gene information.
+
 setup.py: Contains package metadata and dependencies.
+
 README.md: This file, which includes the description and usage of the RNASQLite package.
