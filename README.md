@@ -9,6 +9,13 @@ First, navigate to the directory containing `setup.py` and install the package:
 ```bash
 pip install .
 ```
+
+Alternatively, if the package is available on PyPI, you can install it directly:
+
+```
+pip install RNASQLite
+```
+
 ## Usage
 Create Database
 Create a new database. If a database file with the same name already exists, it will be deleted.
